@@ -8,6 +8,9 @@ from openai import OpenAI
 # Carica le variabili d'ambiente dal file .env
 load_dotenv()
 
+app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
+
 # Configurazione di OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
@@ -67,4 +70,6 @@ def predict():
     return f"<h1>Recommended Movies:</h1><p>{response_text}</p>"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.getenv('PORT', 5000)) 
+    print(f"Starting app on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=True)
