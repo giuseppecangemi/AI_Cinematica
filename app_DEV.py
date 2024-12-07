@@ -9,7 +9,7 @@ from openai import OpenAI
 load_dotenv()
 
 # Configurazione di OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY") 
 client = OpenAI()
 
 # Percorso del file CSV che contiene i dati sui film
