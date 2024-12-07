@@ -50,7 +50,7 @@ def predict():
                 - User Score: {user_score_min} to {user_score_max}
                 - Release Date: {release_date_min} to {release_date_max}
 
-                Please recommend a few movies that match the user's preferences.
+                Please recommend a few movies that match the user's preferences. Each movie should be listed on a new line, with details such as title, genre, user score, and release date.
                 """
                 }],
         stream=True,
@@ -60,6 +60,9 @@ def predict():
     for chunk in stream:
         if chunk.choices[0].delta.content is not None:
             response_text += chunk.choices[0].delta.content
+
+    # Sostituire i ritorni a capo con <br> per visualizzare ogni film su una nuova riga
+    response_text = response_text.replace("\n", "<br>")
 
     return f"<h1>Recommended Movies:</h1><p>{response_text}</p>"
 
