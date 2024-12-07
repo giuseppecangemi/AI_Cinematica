@@ -35,7 +35,7 @@ def predict():
     release_date_max = int(request.form.get('release_date_max'))
 
     # Limita il numero di film nel prompt per evitare di superare i limiti di token
-    movie_list = df[['title', 'genres', 'user_score', 'release_date']].head(3000).to_string(index=False)
+    movie_list = df[['title', 'genres', 'user_score', 'release_date']].sample(n=3000, random_state=None).to_string(index=False)
 
     # Richiesta di completamento della chat con OpenAI (streaming)
     response_text = ""
