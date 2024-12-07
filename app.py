@@ -17,7 +17,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
 # Percorso del file CSV che contiene i dati sui film
-CSV_PATH = 'movies.csv'  # Modifica il percorso se necessario
+CSV_PATH = 'Movies.csv'  # Modifica il percorso se necessario
 
 # Carica il file CSV in un DataFrame Pandas
 df = pd.read_csv(CSV_PATH)
