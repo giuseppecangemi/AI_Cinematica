@@ -29,55 +29,54 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        # Recupera i dati dal form
-        genre = request.form.get('genre')
-        user_score_min = float(request.form.get('user_score_min'))
-        user_score_max = float(request.form.get('user_score_max'))
-        release_date_min = int(request.form.get('release_date_min'))
-        release_date_max = int(request.form.get('release_date_max'))
+    # Recupera i dati dal form
+    genre = request.form.get('genre')
+    user_score_min = float(request.form.get('user_score_min'))
+    user_score_max = float(request.form.get('user_score_max'))
+    release_date_min = int(request.form.get('release_date_min'))
+    release_date_max = int(request.form.get('release_date_max'))
 
-        print(f"Received input: Genre={genre}, Score Min={user_score_min}, Score Max={user_score_max}, Release Date Min={release_date_min}, Release Date Max={release_date_max}")
+    # Limita il numero di film nel prompt per evitare di superare i limiti di token
+    movie_list = df[['title', 'genres', 'user_score', 'release_date']].head(3000).to_string(index=False)
 
-        # Limita il numero di film nel prompt per evitare di superare i limiti di token
-        movie_list = df[['title', 'genres', 'user_score', 'release_date']].head(3000).to_string(index=False)
-        
-        # Richiesta di completamento della chat con OpenAI (streaming)
-        response_text = ""
-        stream = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": f"""
-                    Considera la seguente lista di film con i dettagli (titolo, generi, punteggio utente, data di uscita):
-                    {movie_list}
+    # Richiesta di completamento della chat con OpenAI (streaming)
+    response_text = ""
+    stream = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": f"""
+                Considera la seguente lista di film con i dettagli (titolo, generi, punteggio utente, data di uscita):
+                {movie_list}
 
-                    L'utente ha fornito i seguenti criteri:
-                    - Genere: {genre}
-                    - Punteggio Utente: {user_score_min} a {user_score_max}
-                    - Anno di Uscita: {release_date_min} a {release_date_max}
+                L'utente ha fornito i seguenti criteri:
+                - Genere: {genre}
+                - Punteggio Utente: {user_score_min} a {user_score_max}
+                - Anno di Uscita: {release_date_min} a {release_date_max}
 
-                    Si prega di consigliare alcuni film che corrispondano ai criteri dell'utente.
-                    """
-                    }],
-            stream=True,
-        )
+                Si prega di consigliare alcuni film che corrispondano ai criteri dell'utente.
+                """
+                }],
+        stream=True,
+    )
 
-        # Estrai e formatta i risultati dallo stream
-        for chunk in stream:
-            if chunk.choices[0].delta.content is not None:
-                response_text += chunk.choices[0].delta.content
+    # Estrai e formatta i risultati dallo stream
+    for chunk in stream:
+        if chunk.choices[0].delta.content is not None:
+            response_text += chunk.choices[0].delta.content
 
-        print(f"Response from OpenAI: {response_text[:100]}...")  # Log the first 100 characters of the response
+    # Sostituire i ritorni a capo con <br> per visualizzare ogni film su una nuova riga
+    response_text = response_text.replace("\n", "<br>")
 
-        # Sostituire i ritorni a capo con <br> per visualizzare ogni film su una nuova riga
-        response_text = response_text.replace("\n", "<br>")
-
-        return f"<h1>Recommended Movies:</h1><p>{response_text}</p>"
-
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")
-        return f"<h1>Error: {str(e)}</h1>"
+    # Ritorna alla stessa pagina con i risultati della ricerca e i dati del form
+    return render_template('predict.html', 
+                           response_text=response_text, 
+                           genre=genre,
+                           user_score_min=user_score_min,
+                           user_score_max=user_score_max,
+                           release_date_min=release_date_min,
+                           release_date_max=release_date_max)
 
 
 if __name__ == '__main__':

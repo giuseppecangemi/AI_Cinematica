@@ -64,7 +64,15 @@ def predict():
     # Sostituire i ritorni a capo con <br> per visualizzare ogni film su una nuova riga
     response_text = response_text.replace("\n", "<br>")
 
-    return f"<h1>Recommended Movies:</h1><p>{response_text}</p>"
+    # Ritorna alla stessa pagina con i risultati della ricerca e i dati del form
+    return render_template('predict.html', 
+                           response_text=response_text, 
+                           genre=genre,
+                           user_score_min=user_score_min,
+                           user_score_max=user_score_max,
+                           release_date_min=release_date_min,
+                           release_date_max=release_date_max)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -10,43 +10,42 @@
     <h1>Inserisci i criteri per il consiglio dei film</h1>
     <form action="/predict" method="POST">
         <label for="genre">Genere:</label>
-        <input type="text" name="genre" required><br><br>
+        <input type="text" name="genre" value="{{ genre or '' }}" required><br><br>
 
         <label for="user_score_min">User Score Minimo:</label>
         <select name="user_score_min" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            {% for i in range(1, 11) %}
+                <option value="{{ i }}" {% if i == user_score_min %} selected {% endif %}>{{ i }}</option>
+            {% endfor %}
         </select><br><br>
 
         <label for="user_score_max">User Score Massimo:</label>
         <select name="user_score_max" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            {% for i in range(1, 11) %}
+                <option value="{{ i }}" {% if i == user_score_max %} selected {% endif %}>{{ i }}</option>
+            {% endfor %}
         </select><br><br>
 
         <label for="release_date_min">Anno di Uscita Minimo:</label>
-        <input type="number" name="release_date_min" required><br><br>
+        <input type="number" name="release_date_min" value="{{ release_date_min or '' }}" required><br><br>
 
         <label for="release_date_max">Anno di Uscita Massimo:</label>
-        <input type="number" name="release_date_max" required><br><br>
+        <input type="number" name="release_date_max" value="{{ release_date_max or '' }}" required><br><br>
 
         <button type="submit">Invia</button>
     </form>
+
+    {% if response_text %}
+        <h2>Film Consigliati:</h2>
+        <p>{{ response_text|safe }}</p>
+        <form action="/predict" method="POST">
+            <input type="hidden" name="genre" value="{{ genre }}">
+            <input type="hidden" name="user_score_min" value="{{ user_score_min }}">
+            <input type="hidden" name="user_score_max" value="{{ user_score_max }}">
+            <input type="hidden" name="release_date_min" value="{{ release_date_min }}">
+            <input type="hidden" name="release_date_max" value="{{ release_date_max }}">
+            <button type="submit">Ripeti Ricerca</button>
+        </form>
+    {% endif %}
 </body>
-</html> 
+</html>
