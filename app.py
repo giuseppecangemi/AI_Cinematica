@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
+
 # Carica le variabili d'ambiente dal file .env
 load_dotenv()
 
