@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consigli per Film</title>
+</head>
+<body>
+    <h1>Inserisci i criteri per il consiglio dei film</h1>
+    <form action="/predict" method="POST">
+        <label for="genre">Genere:</label>
+        <input type="text" name="genre" required><br><br>
+
+        <label for="user_score_min">User Score Minimo:</label>
+        <select name="user_score_min" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select><br><br>
+
+        <label for="user_score_max">User Score Massimo:</label>
+        <select name="user_score_max" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select><br><br>
+
+        <label for="release_date_min">Anno di Uscita Minimo:</label>
+        <input type="number" name="release_date_min" required><br><br>
+
+        <label for="release_date_max">Anno di Uscita Massimo:</label>
+        <input type="number" name="release_date_max" required><br><br>
+
+        <button type="submit">Invia</button>
+    </form>
+</body>
+</html>

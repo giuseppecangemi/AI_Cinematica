@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risultato</title>
 </head>
 <body>
-    <h1>Risultato della Predizione</h1>
-    <p>Il modello predice: {{ prediction }}</p>
-    <a href="/">Torna indietro</a>
+    <h1>Risultato del Consiglio dei Film</h1>
+    <p>{{ openai_response }}</p>
+    <a href="/">Torna alla pagina principale</a>
 </body>
 </html>
