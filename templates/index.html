@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consigli per Film</title>
+    <title>Non sai che film guardare?</title>
 </head>
 
 <body>
-    <h1>Inserisci i criteri per il consiglio dei film</h1>
+    <h1>Inserisci le tue preferenze, ti consiglio io!</h1>
     <form action="/predict" method="POST">
         <label for="genre">Genere:</label>
         <input type="text" name="genre" value="{{ genre or '' }}" required><br><br>
 
-        <label for="user_score_min">User Score Minimo:</label>
+        <label for="user_score_min">Voto IMDb Minimo:</label>
         <select name="user_score_min" required>
             {% for i in range(1, 11) %}
                 <option value="{{ i }}" {% if i == user_score_min %} selected {% endif %}>{{ i }}</option>
             {% endfor %}
         </select><br><br>
 
-        <label for="user_score_max">User Score Massimo:</label>
+        <label for="user_score_max">Voto IMDb Massimo:</label>
         <select name="user_score_max" required>
             {% for i in range(1, 11) %}
                 <option value="{{ i }}" {% if i == user_score_max %} selected {% endif %}>{{ i }}</option>
