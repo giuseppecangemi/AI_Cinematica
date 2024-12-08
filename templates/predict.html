@@ -4,32 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Consigliati</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://source.unsplash.com/1600x900/?cinema,movies') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 50px;
+            color: #ffcc00;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #ffffff;
+        }
+
+        form {
+            background: rgba(0, 0, 0, 0.8);
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: block;
+            color: #ffcc00;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ffaa00;
+        }
+
+        h4 {
+            text-align: center;
+            margin-top: 15px;
+            color: #ffcc00;
+            font-size: 0.9rem;
+        }
+
+        .results {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .results p {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .buttons button {
+            padding: 15px 30px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons button:hover {
+            background-color: #ffaa00;
+        }
+    </style>
 </head>
+
 <body>
     <h1>Film Consigliati</h1>
+    <h2>Lasciati ispirare dall'intelligenza artificiale!</h2>
 
-    <p>{{ response_text|safe }}</p>
+    <div class="results">
+        <h2>Risultati della ricerca:</h2>
+        <p>{{ response_text|safe }}</p>
+    </div>
 
-    <!-- Bottone per ripetere la ricerca senza mostrare i parametri -->
-    <form action="/predict" method="POST">
-        <input type="hidden" name="genre" value="{{ genre }}">
-        <input type="hidden" name="user_score_min" value="{{ user_score_min }}">
-        <input type="hidden" name="user_score_max" value="{{ user_score_max }}">
-        <input type="hidden" name="release_date_min" value="{{ release_date_min }}">
-        <input type="hidden" name="release_date_max" value="{{ release_date_max }}">
-        <h4>Se i risultati non ti soddisfano, ripeti la ricerca o inserisci nuovi input:</h4>
-        <button type="submit">Ripeti Ricerca</button>
-    </form>
+    <div class="buttons">
+        <!-- Bottone per ripetere la ricerca senza mostrare i parametri -->
+        <form action="/predict" method="POST">
+            <input type="hidden" name="genre" value="{{ genre }}">
+            <input type="hidden" name="user_score_min" value="{{ user_score_min }}">
+            <input type="hidden" name="user_score_max" value="{{ user_score_max }}">
+            <input type="hidden" name="release_date_min" value="{{ release_date_min }}">
+            <input type="hidden" name="release_date_max" value="{{ release_date_max }}">
+            <button type="submit">Ripeti Ricerca</button>
+        </form>
 
-    <br><br>
-    <!-- Tasto per tornare alla pagina di input -->
-    <form action="/" method="GET">
-        <button type="submit">Inserisci nuovi input</button>
-    </form>
-    <br><br>
+        <!-- Tasto per tornare alla pagina di input -->
+        <form action="/" method="GET">
+            <button type="submit">Inserisci nuovi input</button>
+        </form>
+    </div>
 
     <h4>Servizio Culturale gentilmente offerto da Kangemi_Edu</h4>
-
-
 </body>
 </html>
