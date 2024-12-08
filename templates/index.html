@@ -4,53 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Non sai che film guardare?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: url('https://source.unsplash.com/1600x900/?cinema,movies') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 50px;
+            color: #ffcc00;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: #ffffff;
+        }
+
+        form {
+            background: rgba(0, 0, 0, 0.8);
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: block;
+            color: #ffcc00;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ffaa00;
+        }
+
+        h4 {
+            text-align: center;
+            margin-top: 15px;
+            color: #ffcc00;
+            font-size: 0.9rem;
+        }
+
+        .results {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .results p {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Non sai che film guardare?</h1>
-    <h2>Inserisci le tue preferenze, ti consiglia l'Intelligenza Artificiale!</h2>
+    <h2 style="color: black; background-color: white; padding: 10px; border-radius: 5px; text-align: center;">
+        Lasciati ispirare dall'intelligenza artificiale!
+    </h2>
 
     <form action="/predict" method="POST">
         <label for="genre">Genere:</label>
-        <input type="text" name="genre" value="{{ genre or '' }}" required><br><br>
+        <input type="text" name="genre" value="{{ genre or '' }}" placeholder="Es. Avventura, Commedia" required>
 
         <label for="user_score_min">Voto IMDb Minimo:</label>
         <select name="user_score_min" required>
             {% for i in range(1, 11) %}
                 <option value="{{ i }}" {% if i == user_score_min %} selected {% endif %}>{{ i }}</option>
             {% endfor %}
-        </select><br><br>
+        </select>
 
         <label for="user_score_max">Voto IMDb Massimo:</label>
         <select name="user_score_max" required>
             {% for i in range(1, 11) %}
                 <option value="{{ i }}" {% if i == user_score_max %} selected {% endif %}>{{ i }}</option>
             {% endfor %}
-        </select><br><br>
+        </select>
 
         <label for="release_date_min">Anno di Uscita Minimo:</label>
-        <input type="number" name="release_date_min" value="{{ release_date_min or '' }}" required><br><br>
+        <input type="number" name="release_date_min" value="{{ release_date_min or '' }}" placeholder="Es. 1990" required>
 
         <label for="release_date_max">Anno di Uscita Massimo:</label>
-        <input type="number" name="release_date_max" value="{{ release_date_max or '' }}" required><br><br>
+        <input type="number" name="release_date_max" value="{{ release_date_max or '' }}" placeholder="Es. 2023" required>
 
-        <button type="submit">Invia</button>
-        <br><br>
-
-        <h4>Servizio Culturale gentilmente offerto da Kangemi_Edu</h4>
+        <button type="submit">Trova Film</button>
+        <h4>Servizio culturale gentilmente offerto da Kangemi_Edu</h4>
     </form>
 
     {% if response_text %}
-        <h2>Film Consigliati:</h2>
-        <p>{{ response_text|safe }}</p>
-        <form action="/predict" method="POST">
-            <input type="hidden" name="genre" value="{{ genre }}">
-            <input type="hidden" name="user_score_min" value="{{ user_score_min }}">
-            <input type="hidden" name="user_score_max" value="{{ user_score_max }}">
-            <input type="hidden" name="release_date_min" value="{{ release_date_min }}">
-            <input type="hidden" name="release_date_max" value="{{ release_date_max }}">
-            <button type="submit">Ripeti Ricerca</button>
-        </form>
+        <div class="results">
+            <h2>Film Consigliati:</h2>
+            <p>{{ response_text|safe }}</p>
+            <form action="/predict" method="POST">
+                <input type="hidden" name="genre" value="{{ genre }}">
+                <input type="hidden" name="user_score_min" value="{{ user_score_min }}">
+                <input type="hidden" name="user_score_max" value="{{ user_score_max }}">
+                <input type="hidden" name="release_date_min" value="{{ release_date_min }}">
+                <input type="hidden" name="release_date_max" value="{{ release_date_max }}">
+                <button type="submit">Ripeti Ricerca</button>
+            </form>
+        </div>
     {% endif %}
 </body>
 </html>
