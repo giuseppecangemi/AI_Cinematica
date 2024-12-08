@@ -50,7 +50,8 @@ def predict():
                 - Punteggio Utente: {user_score_min} a {user_score_max}
                 - Anno di Uscita: {release_date_min} a {release_date_max}
 
-                Si prega di consigliare alcuni film che corrispondano ai criteri dell'utente.
+                Si prega di consigliare alcuni film che corrispondano ai criteri dell'utente. Fai in seguenza anche una brevissima descrizione per ogni film consigliato.
+                Questo output che generi deve contenere il titolo, il punteggio utente, la data di uscita (in formato yyyy-mm-dd) e la descrizione richiesta.
                 """
                 }],
         stream=True,
