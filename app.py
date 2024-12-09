@@ -11,7 +11,7 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY") 
 client = OpenAI()
 
-CSV_PATH = 'movies.csv'  
+CSV_PATH = 'Movies.csv'  
 df = pd.read_csv(CSV_PATH)
 
 app = Flask(__name__)
