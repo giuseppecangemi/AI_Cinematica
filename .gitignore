@@ -13,7 +13,10 @@ app_DEV.py
 #*.tmp
 .env
 testAPI.py
-
+model.pkl
+model.ipynb
 result.html
 
-/static
+/static/img
+
+venv
