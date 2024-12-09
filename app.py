@@ -4,51 +4,44 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+from datetime import datetime
 
-
-# Carica le variabili d'ambiente dal file .env
 load_dotenv()
 
-app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')
-
-# Configurazione di OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY") 
 client = OpenAI()
 
-# Percorso del file CSV che contiene i dati sui film
-CSV_PATH = 'Movies.csv'  # Modifica il percorso se necessario
-
-# Carica il file CSV in un DataFrame Pandas
+CSV_PATH = 'movies.csv'  
 df = pd.read_csv(CSV_PATH)
 
-# Inizializza l'app Flask
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Recupera i dati dal form
     genre = request.form.get('genre')
     user_score_min = float(request.form.get('user_score_min'))
     user_score_max = float(request.form.get('user_score_max'))
     release_date_min = int(request.form.get('release_date_min'))
     release_date_max = int(request.form.get('release_date_max'))
 
-    # Limita il numero di film nel prompt per evitare di superare i limiti di token
-    movie_list = df[['title', 'genres', 'user_score', 'release_date']].sample(n=1500, random_state=None).to_string(index=False)
+    movie_list = df[['title', 'user_score', 'release_date']].sample(n=500).to_dict(orient='records')
+    movie_list_str = "\n".join([f"{m['title']} ({m['release_date']}, Punteggio: {m['user_score']})" for m in movie_list])
 
-    # Richiesta di completamento della chat con OpenAI (streaming)
+    #shuffled_movies = df.sample(frac=1).head(500)
+    #movie_list = shuffled_movies.to_string(index=False)
+    #timestamp = datetime.now().isoformat()
+
+    #prompt
     response_text = ""
     stream = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": f"""
                 Considera la seguente lista di film con i dettagli (titolo, generi, punteggio utente, data di uscita):
-                {movie_list}
+                {movie_list_str}
 
                 L'utente ha fornito i seguenti criteri:
                 - Genere: {genre}
@@ -62,15 +55,14 @@ def predict():
         stream=True,
     )
 
-    # Estrai e formatta i risultati dallo stream
+
     for chunk in stream:
         if chunk.choices[0].delta.content is not None:
             response_text += chunk.choices[0].delta.content
 
-    # Sostituire i ritorni a capo con <br> per visualizzare ogni film su una nuova riga
+    #per andare a capo (lasciare spazio)
     response_text = response_text.replace("\n", "<br>")
 
-    # Ritorna alla stessa pagina con i risultati della ricerca e i dati del form
     return render_template('predict.html', 
                            response_text=response_text, 
                            genre=genre,
