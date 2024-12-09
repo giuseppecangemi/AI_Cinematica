@@ -50,7 +50,7 @@ L'applicazione è accessibile 24/7 online tramite **Render**. ChatGPT, invece, p
 ## Versione Online
 
 L'applicazione è anche disponibile online all'indirizzo:  
-[https://ml-ai-webservice.onrender.com](https://ml-ai-webservice.onrender.com)
+[https://ai-cinematica.onrender.com](https://ai-cinematica.onrender.com)
 
 Questa versione è stata pubblicata su **Render**, una piattaforma che permette di eseguire e distribuire applicazioni web in modo semplice e scalabile. Render offre un'infrastruttura cloud che automatizza il deployment e la gestione delle applicazioni, consentendo agli sviluppatori di concentrarsi sul codice senza preoccuparsi della gestione dei server.
 
