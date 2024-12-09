@@ -1,7 +1,7 @@
 # Ignora i file di configurazione locali
 #.env
 #config.py
-#app_DEV.py
+app_DEV.py
 #mail.py
 # Ignora cartelle specifiche
 /DB/
@@ -12,3 +12,8 @@
 #*.log
 #*.tmp
 .env
+testAPI.py
+
+result.html
+
+/static
